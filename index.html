@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EJT Digital — Brand Scaling Agency | Etched Into Reality</title>
+<meta name="description" content="EJT Digital is a Johannesburg-based brand scaling agency. We build brands, manage social media, create websites, and drive client acquisition — etched into reality.">
+<meta property="og:title" content="EJT Digital — Brand Scaling Agency">
+<meta property="og:description" content="We carve ideas into execution. Brand strategy, digital presence, and growth systems built to last.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ejtdigital.co.za">
+<link rel="canonical" href="https://ejtdigital.co.za">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pure-black:  #111111;
+    --dark-grey:   #3A3A3A;
+    --mid-grey:    #9A9A9A;
+    --off-white:   #F4F4F2;
+    --wa-green:    #25D366;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--pure-black);
+    color: var(--off-white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* hide custom cursor on touch devices */
+  @media (hover: none) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+
+  .cursor {
+    position: fixed; width: 6px; height: 6px;
+    background: var(--off-white); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .2s, height .2s;
+  }
+  .cursor-ring {
+    position: fixed; width: 28px; height: 28px;
+    border: 1px solid rgba(244,244,242,.35); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: width .3s, height .3s;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.028; pointer-events: none; z-index: 900;
+  }
+
+  /* ══════════════════════════════
+     NAV
+  ══════════════════════════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 52px;
+    transition: background .4s, padding .4s;
+  }
+  nav.scrolled {
+    background: rgba(17,17,17,.96);
+    padding: 16px 52px;
+    border-bottom: 1px solid rgba(244,244,242,.06);
+  }
+  nav::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(17,17,17,.88) 0%, transparent 100%);
+    pointer-events: none; z-index: -1;
+    transition: opacity .4s;
+  }
+  nav.scrolled::after { opacity: 0; }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 14px; text-decoration: none;
+  }
+  .nav-logo-mark svg { width: 34px; height: 34px; }
+  .nav-logo-divider { width: 1px; height: 26px; background: rgba(244,244,242,.18); }
+  .nav-logo-text { display: flex; flex-direction: column; gap: 1px; }
+  .nav-logo-ejt {
+    font-family: 'Montserrat', sans-serif; font-weight: 500;
+    font-size: 0.78rem; letter-spacing: 0.28em; color: var(--off-white);
+  }
+  .nav-logo-digital {
+    font-family: 'Montserrat', sans-serif; font-weight: 300;
+    font-size: 0.58rem; letter-spacing: 0.34em; color: var(--mid-grey);
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 40px; }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--mid-grey); text-decoration: none; transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--off-white); }
+
+  /* WhatsApp nav button */
+  .nav-wa {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 20px;
+    background: transparent;
+    border: 1px solid rgba(37,211,102,.4);
+    color: var(--wa-green);
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: background .3s, border-color .3s;
+    white-space: nowrap;
+  }
+  .nav-wa:hover { background: rgba(37,211,102,.08); border-color: var(--wa-green); }
+  .nav-wa svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 1px;
+    background: var(--off-white); transition: transform .3s, opacity .3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* Mobile drawer */
+  .nav-drawer {
+    position: fixed; inset: 0; z-index: 400;
+    background: rgba(17,17,17,.98);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 36px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s;
+  }
+  .nav-drawer.open { opacity: 1; pointer-events: all; }
+  .nav-drawer a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem; font-weight: 300;
+    color: var(--off-white); text-decoration: none;
+    letter-spacing: .04em; transition: color .3s;
+  }
+  .nav-drawer a:hover { color: var(--mid-grey); }
+  .nav-drawer .drawer-wa {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 28px; border: 1px solid rgba(37,211,102,.4);
+    color: var(--wa-green); font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem; letter-spacing: .2em; text-transform: uppercase;
+    text-decoration: none; margin-top: 12px;
+    transition: background .3s;
+  }
+  .nav-drawer .drawer-wa:hover { background: rgba(37,211,102,.08); }
+  .nav-drawer .drawer-wa svg { width: 15px; height: 15px; }
+
+  /* ══════════════════════════════
+     HERO
+  ══════════════════════════════ */
+  #hero {
+    position: relative; height: 100vh; min-height: 680px;
+    display: flex; align-items: center; overflow: hidden;
+    background: linear-gradient(140deg,
+      var(--pure-black) 0%, #1c1c1c 35%,
+      #2e2e2e 60%, #4a4a4a 80%, var(--mid-grey) 100%);
+  }
+  .hero-bg-mark {
+    position: absolute; right: -6%; bottom: -8%;
+    width: clamp(380px, 58vw, 820px);
+    opacity: 0; pointer-events: none; user-select: none;
+    animation: markReveal 1.6s cubic-bezier(.16,1,.3,1) .3s forwards;
+  }
+  @keyframes markReveal {
+    from { opacity:0; transform: translateY(30px) scale(.97); }
+    to   { opacity:.13; transform: translateY(0) scale(1); }
+  }
+  .hero-content {
+    position: relative; z-index: 10;
+    margin-left: 8%; max-width: 580px;
+    opacity: 0; animation: fadeUp 1s cubic-bezier(.16,1,.3,1) .9s forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(28px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase;
+    color: var(--mid-grey); margin-bottom: 26px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 28px; height: 1px; background: var(--mid-grey);
+  }
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(3.2rem, 6vw, 5.6rem); line-height: 1.02;
+    color: var(--off-white); margin-bottom: 26px; letter-spacing: -.01em;
+  }
+  .hero-headline em { font-style: italic; color: var(--mid-grey); }
+  .hero-sub {
+    font-size: 0.82rem; line-height: 1.85; font-weight: 300;
+    color: var(--mid-grey); margin-bottom: 44px; max-width: 400px;
+  }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-wa {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 28px; background: var(--wa-green);
+    color: #111; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; font-weight: 600;
+    transition: opacity .3s, gap .3s;
+  }
+  .btn-wa:hover { opacity: .88; gap: 16px; }
+  .btn-wa svg { width: 15px; height: 15px; }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 28px; border: 1px solid rgba(244,244,242,.25);
+    color: var(--off-white); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: background .3s, border-color .3s, gap .3s;
+  }
+  .btn-outline:hover {
+    background: rgba(244,244,242,.06); border-color: rgba(244,244,242,.5); gap: 16px;
+  }
+  .btn-outline svg { width: 13px; height: 13px; }
+
+  .hero-scroll {
+    position: absolute; bottom: 36px; left: 52px;
+    display: flex; align-items: center; gap: 14px;
+    opacity: 0; animation: fadeUp 1s ease 1.6s forwards;
+  }
+  .hero-scroll span { font-size: 0.58rem; letter-spacing: .26em; text-transform: uppercase; color: var(--dark-grey); }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: linear-gradient(to right, var(--dark-grey), transparent);
+    animation: scrollPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { opacity:.3; } 50% { opacity:1; }
+  }
+
+  /* ══════════════════════════════
+     SHARED
+  ══════════════════════════════ */
+  .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 52px; }
+  .section-label {
+    font-size: 0.58rem; letter-spacing: .32em; text-transform: uppercase; color: var(--dark-grey);
+  }
+  .reveal {
+    opacity:0; transform: translateY(28px);
+    transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.visible { opacity:1; transform: translateY(0); }
+  .d1{transition-delay:.1s;} .d2{transition-delay:.22s;} .d3{transition-delay:.34s;} .d4{transition-delay:.46s;}
+
+  /* ══════════════════════════════
+     CLIENT STRIP
+  ══════════════════════════════ */
+  #clients {
+    background: #0d0d0d;
+    border-top: 1px solid rgba(244,244,242,.05);
+    border-bottom: 1px solid rgba(244,244,242,.05);
+    padding: 40px 0;
+  }
+  .clients-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 52px;
+    display: flex; align-items: center; gap: 60px;
+  }
+  .clients-label {
+    font-size: 0.56rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--dark-grey); white-space: nowrap; flex-shrink: 0;
+  }
+  .clients-divider { width: 1px; height: 32px; background: rgba(244,244,242,.08); flex-shrink: 0; }
+  .clients-logos { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
+
+  /* MCS logo rendered as styled text block (since PNG has white bg) */
+  .client-logo-mcs {
+    display: flex; align-items: center; gap: 10px; opacity: .5;
+    filter: grayscale(1) brightness(1.4);
+    transition: opacity .3s;
+  }
+  .client-logo-mcs:hover { opacity: .8; }
+  .mcs-badge {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a3a6b, #2e7dc7);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Montserrat', sans-serif; font-weight: 700;
+    font-size: 0.7rem; color: #fff; letter-spacing: .04em;
+  }
+  .mcs-text { display: flex; flex-direction: column; gap: 1px; }
+  .mcs-name {
+    font-family: 'Montserrat', sans-serif; font-weight: 500;
+    font-size: 0.68rem; letter-spacing: .1em; color: var(--off-white);
+  }
+  .mcs-sub {
+    font-family: 'Montserrat', sans-serif; font-weight: 300;
+    font-size: 0.52rem; letter-spacing: .14em; color: var(--mid-grey); text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════
+     ABOUT
+  ══════════════════════════════ */
+  #about { background: var(--pure-black); padding: 130px 0; }
+  .about-grid { display: grid; grid-template-columns: 220px 1fr; gap: 80px; align-items: start; }
+  .about-left { padding-top: 8px; }
+  .about-stacked-logo { width: 80px; margin-bottom: 32px; opacity: .65; }
+  .about-right { border-top: 1px solid rgba(244,244,242,.08); padding-top: 36px; }
+  .about-headline {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(2rem, 3.8vw, 3rem); line-height: 1.1;
+    color: var(--off-white); margin-bottom: 32px; letter-spacing: -.01em;
+  }
+  .about-headline em { font-style: italic; color: var(--mid-grey); }
+  .about-body {
+    font-size: 0.88rem; line-height: 1.9; font-weight: 300;
+    color: var(--mid-grey); max-width: 520px;
+  }
+
+  /* ══════════════════════════════
+     SERVICES
+  ══════════════════════════════ */
+  #services {
+    padding: 130px 0; position: relative; overflow: hidden;
+  }
+  #services::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%);
+  }
+  .services-head {
+    position: relative; z-index: 1;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-bottom: 1px solid rgba(244,244,242,.1); padding-bottom: 28px;
+  }
+  .services-head h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--off-white);
+  }
+  .services-count { font-size: 0.58rem; letter-spacing: .28em; text-transform: uppercase; color: var(--mid-grey); }
+  .services-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2,1fr); }
+  .service-card {
+    padding: 44px 0;
+    display: grid; grid-template-columns: 40px 1fr; gap: 24px;
+    border-bottom: 1px solid rgba(244,244,242,.07);
+    cursor: default; position: relative;
+  }
+  .service-card:nth-child(odd) { border-right: 1px solid rgba(244,244,242,.07); padding-right: 48px; }
+  .service-card:nth-child(even) { padding-left: 48px; }
+  .service-card::after {
+    content: ''; position: absolute; bottom:0; left:0; right:0; height:1px;
+    background: linear-gradient(to right, var(--mid-grey), transparent);
+    opacity:0; transition: opacity .4s;
+  }
+  .service-card:hover::after { opacity:.35; }
+  .svc-num { font-size: 0.6rem; letter-spacing:.1em; color: #555; padding-top: 3px; }
+  .svc-name {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.4rem;
+    color: var(--off-white); margin-bottom: 10px; transition: color .3s;
+  }
+  .service-card:hover .svc-name { color: #fff; }
+  .svc-desc { font-size: 0.8rem; line-height: 1.8; font-weight: 300; color: var(--mid-grey); }
+
+  /* ══════════════════════════════
+     PROCESS
+  ══════════════════════════════ */
+  #process { background: var(--pure-black); padding: 130px 0; }
+  .process-top { display: flex; justify-content: space-between; align-items: flex-end; }
+  .process-top h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--off-white);
+  }
+  .process-steps { display: flex; border-top: 1px solid rgba(244,244,242,.08); margin-top: 48px; }
+  .step {
+    flex: 1; padding: 40px 32px 40px 0;
+    border-right: 1px solid rgba(244,244,242,.07);
+  }
+  .step:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
+  .step:not(:first-child):not(:last-child) { padding: 40px 32px; }
+  .step-n {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 3.8rem;
+    color: rgba(244,244,242,.05); line-height: 1; margin-bottom: 20px; transition: color .4s;
+  }
+  .step:hover .step-n { color: rgba(244,244,242,.12); }
+  .step-title { font-size: 0.62rem; letter-spacing: .26em; text-transform: uppercase; color: var(--off-white); margin-bottom: 14px; }
+  .step-desc { font-size: 0.8rem; line-height: 1.85; font-weight: 300; color: var(--mid-grey); }
+
+  /* ══════════════════════════════
+     FAQ
+  ══════════════════════════════ */
+  #faq {
+    background: #0d0d0d;
+    border-top: 1px solid rgba(244,244,242,.05);
+    padding: 130px 0;
+  }
+  .faq-grid { display: grid; grid-template-columns: 280px 1fr; gap: 80px; align-items: start; }
+  .faq-left { padding-top: 8px; }
+  .faq-left h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(2rem, 3.5vw, 2.8rem); color: var(--off-white);
+    line-height: 1.1; margin-top: 16px;
+  }
+  .faq-list { display: flex; flex-direction: column; }
+  .faq-item { border-bottom: 1px solid rgba(244,244,242,.08); }
+  .faq-q {
+    width: 100%; background: none; border: none; text-align: left;
+    padding: 24px 0; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    color: var(--off-white);
+    font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 400;
+    letter-spacing: .02em; transition: color .3s;
+  }
+  .faq-q:hover { color: var(--mid-grey); }
+  .faq-icon {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border: 1px solid rgba(244,244,242,.2); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .4s, border-color .3s;
+  }
+  .faq-icon::before {
+    content: '+'; font-size: 0.75rem; color: var(--mid-grey); line-height: 1;
+    transition: content .3s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); border-color: rgba(244,244,242,.4); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height .45s cubic-bezier(.16,1,.3,1), padding .45s;
+    font-size: 0.82rem; line-height: 1.85; font-weight: 300; color: var(--mid-grey);
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding-bottom: 24px; }
+
+  /* ══════════════════════════════
+     CONTACT
+  ══════════════════════════════ */
+  #contact {
+    position: relative; overflow: hidden; padding: 150px 0;
+    background: linear-gradient(150deg,
+      #1a1a1a 0%, #252525 30%, #3a3a3a 60%, var(--mid-grey) 100%);
+  }
+  .contact-bg-logo {
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    width: clamp(220px, 30vw, 420px);
+    opacity: .06; pointer-events: none; user-select: none;
+  }
+  .contact-inner { position: relative; z-index: 10; }
+  .contact-pre {
+    font-size: 0.6rem; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--mid-grey); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .contact-pre::before { content: ''; width: 28px; height: 1px; background: var(--mid-grey); }
+  .contact-headline {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(3.5rem, 9vw, 8rem); line-height: .92;
+    letter-spacing: -.02em; color: var(--off-white); margin-bottom: 20px;
+  }
+  .contact-headline span { display: block; color: rgba(244,244,242,.32); font-style: italic; }
+  .contact-sub {
+    font-size: 0.8rem; line-height: 1.8; font-weight: 300; color: var(--mid-grey);
+    margin-bottom: 44px; max-width: 400px;
+  }
+  .contact-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .contact-email {
+    font-size: 0.7rem; letter-spacing: .14em; color: var(--mid-grey); text-decoration: none;
+    border-bottom: 1px solid rgba(154,154,154,.3); padding-bottom: 2px;
+    transition: color .3s, border-color .3s;
+  }
+  .contact-email:hover { color: var(--off-white); border-color: rgba(244,244,242,.5); }
+
+  /* ══════════════════════════════
+     FOOTER
+  ══════════════════════════════ */
+  footer {
+    background: #0a0a0a; padding: 32px 52px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(244,244,242,.06);
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 12px; }
+  .footer-logo svg { width: 22px; height: 22px; opacity: .5; }
+  .footer-logo-text { font-size: 0.6rem; letter-spacing: .28em; color: var(--dark-grey); text-transform: uppercase; }
+  footer small { font-size: 0.58rem; letter-spacing: .12em; text-transform: uppercase; color: #2a2a2a; }
+
+  /* ══════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════ */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-wa { display: none; }
+    .nav-hamburger { display: flex; }
+
+    .section-inner, .clients-inner { padding: 0 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-left { display: flex; align-items: center; gap: 20px; }
+    .about-stacked-logo { margin-bottom: 0; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card:nth-child(odd) { border-right: none; padding-right: 0; }
+    .service-card:nth-child(even) { padding-left: 0; }
+    .process-steps { flex-direction: column; }
+    .step { border-right: none; border-bottom: 1px solid rgba(244,244,242,.07); padding: 32px 0 !important; }
+    .faq-grid { grid-template-columns: 1fr; gap: 36px; }
+    footer { flex-direction: column; text-align: center; padding: 24px; }
+    .hero-content { margin-left: 24px; max-width: 90%; }
+    .hero-scroll { left: 24px; }
+    .hero-ctas { flex-direction: column; align-items: flex-start; }
+    .clients-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#about" class="drawer-link">About</a>
+  <a href="#services" class="drawer-link">Services</a>
+  <a href="#process" class="drawer-link">Process</a>
+  <a href="#faq" class="drawer-link">FAQ</a>
+  <a href="#contact" class="drawer-link">Contact</a>
+  <a href="https://wa.me/27670070229?text=Hi%20EJT%20Digital%2C%20I%27d%20like%20to%20discuss%20scaling%20my%20brand." class="drawer-wa" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Chat on WhatsApp
+  </a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="22" x2="52" y2="22" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="18" y1="22" x2="18" y2="78" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="18" y1="50" x2="46" y2="50" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="18" y1="78" x2="52" y2="78" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="12" y1="50" x2="88" y2="50" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="58" y1="22" x2="82" y2="22" stroke="#F4F4F2" stroke-width="2.2"/>
+        <line x1="70" y1="22" x2="70" y2="82" stroke="#F4F4F2" stroke-width="2.2"/>
+      </svg>
+    </div>
+    <div class="nav-logo-divider"></div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-ejt">E J T</span>
+      <span class="nav-logo-digital">D I G I T A L</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://wa.me/27670070229?text=Hi%20EJT%20Digital%2C%20I%27d%20like%20to%20discuss%20scaling%20my%20brand." class="nav-wa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Let's Talk
+    </a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-mark">
+    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="90" y1="110" x2="265" y2="110" stroke="#F4F4F2" stroke-width="6"/>
+      <line x1="90" y1="110" x2="90" y2="390" stroke="#F4F4F2" stroke-width="6"/>
+      <line x1="90" y1="250" x2="220" y2="250" stroke="#F4F4F2" stroke-width="6"/>
+      <line x1="90" y1="390" x2="265" y2="390" stroke="#F4F4F2" stroke-width="6"/>
+      <path d="M265 110 L265 350 Q265 390 225 390" stroke="#F4F4F2" stroke-width="6" fill="none"/>
+      <line x1="60" y1="250" x2="440" y2="250" stroke="#F4F4F2" stroke-width="6"/>
+      <line x1="295" y1="110" x2="410" y2="110" stroke="#F4F4F2" stroke-width="6"/>
+      <line x1="352" y1="110" x2="352" y2="410" stroke="#F4F4F2" stroke-width="6"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Brand Scaling Agency</p>
+    <h1 class="hero-headline">
+      Etched<br><em>Into</em><br>Reality.
+    </h1>
+    <p class="hero-sub">We carve ideas into execution — brand strategy, digital presence, and growth systems built to last.</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/27670070229?text=Hi%20EJT%20Digital%2C%20I%27d%20like%20to%20discuss%20scaling%20my%20brand." class="btn-wa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+      <a href="#services" class="btn-outline">
+        Our Services
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CLIENT STRIP -->
+<section id="clients">
+  <div class="clients-inner">
+    <span class="clients-label">Brands We've Worked With</span>
+    <div class="clients-divider"></div>
+    <div class="clients-logos">
+      <div class="client-logo-mcs">
+        <div class="mcs-badge">MCS</div>
+        <div class="mcs-text">
+          <span class="mcs-name">Mukoti Cleaning</span>
+          <span class="mcs-sub">Services</span>
+        </div>
+      </div>
+      <!-- More logos can be added here as EJT grows -->
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <svg class="about-stacked-logo" viewBox="0 0 200 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="60" y1="30" x2="122" y2="30" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="60" y1="30" x2="60" y2="145" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="60" y1="88" x2="108" y2="88" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="60" y1="145" x2="122" y2="145" stroke="#F4F4F2" stroke-width="3"/>
+          <path d="M122 30 L122 128 Q122 145 102 145" stroke="#F4F4F2" stroke-width="3" fill="none"/>
+          <line x1="40" y1="88" x2="170" y2="88" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="128" y1="30" x2="162" y2="30" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="145" y1="30" x2="145" y2="155" stroke="#F4F4F2" stroke-width="3"/>
+          <line x1="50" y1="175" x2="150" y2="175" stroke="#9A9A9A" stroke-width="0.8"/>
+          <text x="100" y="210" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="500" font-size="22" letter-spacing="10" fill="#F4F4F2">EJT</text>
+          <text x="100" y="235" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="300" font-size="10" letter-spacing="6" fill="#9A9A9A">DIGITAL</text>
+          <line x1="50" y1="252" x2="150" y2="252" stroke="#9A9A9A" stroke-width="0.8"/>
+          <text x="100" y="278" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="9" letter-spacing="4" fill="#3A3A3A">etched into reality</text>
+        </svg>
+        <p class="section-label">Who We Are</p>
+      </div>
+      <div class="about-right">
+        <h2 class="about-headline reveal d1">
+          We don't decorate<br>brands. <em>We build them</em><br>to withstand.
+        </h2>
+        <p class="about-body reveal d2">
+          EJT Digital is a brand scaling agency built on the belief that real brand-building is deliberate — every touchpoint, system, and asset engineered for longevity. We work with businesses that are serious about scaling, and we treat their ambitions with the same weight they do.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="services-head reveal">
+      <h2>What We Do</h2>
+      <span class="services-count">04 Core Services</span>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal d1">
+        <span class="svc-num">01</span>
+        <div>
+          <h3 class="svc-name">Brand Scaling</h3>
+          <p class="svc-desc">Strategic growth systems that compound. We identify what's working, cut what isn't, and build infrastructure for sustainable brand expansion.</p>
+        </div>
+      </div>
+      <div class="service-card reveal d2">
+        <span class="svc-num">02</span>
+        <div>
+          <h3 class="svc-name">Website Creation</h3>
+          <p class="svc-desc">Conversion-focused, visually sharp web presence built from scratch. No templates, no shortcuts. Your site becomes your most powerful sales asset.</p>
+        </div>
+      </div>
+      <div class="service-card reveal d1">
+        <span class="svc-num">03</span>
+        <div>
+          <h3 class="svc-name">Client Acquisition</h3>
+          <p class="svc-desc">Systematic, targeted outreach that fills your pipeline. Scripts, sequences, and follow-up frameworks designed around your ideal client profile.</p>
+        </div>
+      </div>
+      <div class="service-card reveal d2">
+        <span class="svc-num">04</span>
+        <div>
+          <h3 class="svc-name">Social Media Management</h3>
+          <p class="svc-desc">Content strategy, production, and publishing that builds authority. We run your socials like a media brand — consistent, intentional, measurable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-inner">
+    <div class="process-top">
+      <p class="section-label reveal">How It Works</p>
+      <h2 class="reveal d1" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.8rem,3vw,2.6rem);color:var(--off-white);">The Process</h2>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-n">01</div>
+        <p class="step-title">Audit</p>
+        <p class="step-desc">We diagnose your current position — brand, digital presence, outreach — with zero soft feedback. You get the truth.</p>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-n">02</div>
+        <p class="step-title">Architect</p>
+        <p class="step-desc">A tailored growth system designed around your business model, target market, and real-world constraints.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">03</div>
+        <p class="step-title">Execute</p>
+        <p class="step-desc">We build, launch, and manage. Deliverables are complete, polished, and ready to deploy — no half-measures.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">04</div>
+        <p class="step-title">Scale</p>
+        <p class="step-desc">With systems running, we optimise for growth — tracking KPIs, iterating on what moves the needle, compounding results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="faq-grid">
+      <div class="faq-left reveal">
+        <p class="section-label">Common Questions</p>
+        <h2>What you need<br><em style="font-style:italic;color:var(--mid-grey);">to know</em></h2>
+      </div>
+      <div class="faq-list reveal d1">
+
+        <div class="faq-item">
+          <button class="faq-q">
+            What exactly does a brand scaling agency do?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">We handle everything that builds your brand's presence and generates growth — social media management, website creation, client acquisition systems, and content strategy. Think of us as a full marketing department without the overhead of hiring one.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How is EJT Digital different from other agencies?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">Most agencies sell deliverables. We build systems. We care about the actual outcome for your business — not just posting content or launching a site, but making sure everything we produce works together to grow your brand and generate real results.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How long are your contracts?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">We work on both project-based and monthly retainer arrangements. We don't lock you into long-term contracts you can't exit — we'd rather earn your continued business by delivering results. Contract length depends on the scope of work and is discussed upfront.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How much does it cost to work with EJT Digital?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">Pricing depends on your specific needs and the scope of work. We don't believe in one-size-fits-all packages — instead we build a proposal based on your goals. Reach out via WhatsApp and we'll give you a clear picture within 24 hours.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How quickly can we get started?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">Once we've had an initial conversation, confirmed scope, and agreed on terms, we can typically onboard and begin within 3–5 business days. The faster you move, the faster your brand does too.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Do you work with businesses outside of Johannesburg?
+            <span class="faq-icon"></span>
+          </button>
+          <div class="faq-a">Yes. While we're based in Johannesburg, we work with clients across South Africa and remotely. Everything we do can be managed digitally, so location is rarely a limitation.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg-logo">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="30" x2="122" y2="30" stroke="#F4F4F2" stroke-width="3"/>
+      <line x1="60" y1="30" x2="60" y2="145" stroke="#F4F4F2" stroke-width="3"/>
+      <line x1="60" y1="88" x2="108" y2="88" stroke="#F4F4F2" stroke-width="3"/>
+      <line x1="60" y1="145" x2="122" y2="145" stroke="#F4F4F2" stroke-width="3"/>
+      <path d="M122 30 L122 128 Q122 145 102 145" stroke="#F4F4F2" stroke-width="3" fill="none"/>
+      <line x1="40" y1="88" x2="170" y2="88" stroke="#F4F4F2" stroke-width="3"/>
+      <line x1="128" y1="30" x2="162" y2="30" stroke="#F4F4F2" stroke-width="3"/>
+      <line x1="145" y1="30" x2="145" y2="155" stroke="#F4F4F2" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="section-inner contact-inner">
+    <p class="contact-pre reveal">Let's Build</p>
+    <h2 class="contact-headline reveal d1">
+      Ready to get<br><span>etched in?</span>
+    </h2>
+    <p class="contact-sub reveal d2">Drop us a message on WhatsApp and we'll get back to you within 24 hours. No forms, no waiting — just a conversation.</p>
+    <div class="contact-actions reveal d3">
+      <a href="https://wa.me/27670070229?text=Hi%20EJT%20Digital%2C%20I%27d%20like%20to%20discuss%20scaling%20my%20brand." class="btn-wa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+      <a href="mailto:ejt1digital19@gmail.com" class="contact-email">ejt1digital19@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="18" y1="22" x2="52" y2="22" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="18" y1="22" x2="18" y2="78" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="18" y1="50" x2="46" y2="50" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="18" y1="78" x2="52" y2="78" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="12" y1="50" x2="88" y2="50" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="58" y1="22" x2="82" y2="22" stroke="#F4F4F2" stroke-width="2.5"/>
+      <line x1="70" y1="22" x2="70" y2="82" stroke="#F4F4F2" stroke-width="2.5"/>
+    </svg>
+    <span class="footer-logo-text">E J T &nbsp; D I G I T A L</span>
+  </div>
+  <small>© 2025 EJT Digital — Etched Into Reality</small>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx=-200,my=-200,rx=-200,ry=-200;
+  document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;});
+  (function tick(){
+    if(cursor){cursor.style.left=mx+'px';cursor.style.top=my+'px';}
+    rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+    if(ring){ring.style.left=rx+'px';ring.style.top=ry+'px';}
+    requestAnimationFrame(tick);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{if(cursor){cursor.style.width='10px';cursor.style.height='10px';}if(ring){ring.style.width='44px';ring.style.height='44px';}});
+    el.addEventListener('mouseleave',()=>{if(cursor){cursor.style.width='6px';cursor.style.height='6px';}if(ring){ring.style.width='28px';ring.style.height='28px';}});
+  });
+
+  // Nav scroll state
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  },{passive:true});
+
+  // Mobile hamburger
+  const hamburger = document.getElementById('hamburger');
+  const drawer    = document.getElementById('navDrawer');
+  hamburger.addEventListener('click',()=>{
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+    document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+  });
+  drawer.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+      document.body.style.overflow='';
+    });
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Hero parallax
+  const bgMark = document.querySelector('.hero-bg-mark');
+  window.addEventListener('scroll',()=>{
+    if(bgMark) bgMark.style.transform=`translateY(${window.scrollY*.12}px)`;
+  },{passive:true});
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
