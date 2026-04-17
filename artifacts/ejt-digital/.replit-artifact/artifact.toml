@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "EJT Digital"
+version = "1.0.0"
+id = "artifacts/ejt-digital"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21300
+
+[services.development]
+run = "pnpm --filter @workspace/ejt-digital run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ejt-digital", "run", "build" ]
+publicDir = "artifacts/ejt-digital/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21300"
+BASE_PATH = "/"

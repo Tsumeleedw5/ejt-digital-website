@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "UNS1WzY1udOPQHJS2U8Ds"
+uri = "file://artifacts/ejt-digital/src/assets/hero-bg.png"
+type = "image"
+title = "Dark architectural abstract hero background"
+
+[[generated]]
+id = "EajxL932rOM6T14VwlkLA"
+uri = "file://artifacts/ejt-digital/src/assets/service-websites.png"
+type = "image"
+title = "Dark minimalist workspace"
+
+[[generated]]
+id = "wkFQnapsSbJYK33Lk_y-G"
+uri = "file://artifacts/ejt-digital/src/assets/service-social.png"
+type = "image"
+title = "Abstract social media concept"
+
+[[generated]]
+id = "G0k3Y-A_799EGVwtDFL1a"
+uri = "file://artifacts/ejt-digital/src/assets/service-brand.png"
+type = "image"
+title = "Brand strategy concept"
+
+[[generated]]
+id = "nK7r-4bD52jqLgMdZAa5P"
+uri = "file://artifacts/ejt-digital/src/assets/service-ads.png"
+type = "image"
+title = "Ads abstract concept"
+
+[[generated]]
+id = "xi0-udezl-1Sz1ou38nL1"
+uri = "file://artifacts/ejt-digital/src/assets/process-bg.png"
+type = "image"
+title = "Dark architectural staircase"
