@@ -1,35 +1,21 @@
-import React from "react";
-import { Link } from "wouter";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useSubmitContact } from "@workspace/api-client-react";
+import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
 } from "@/components/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { useSubmitContact } from "@workspace/api-client-react";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 
-// Assuming assets exist
 import logoIcon from "@assets/02_icon_black_1776423555542.png";
-
-// Generated images
 import heroBg from "@/assets/hero-bg.png";
 import serviceWebsites from "@/assets/service-websites.png";
 import serviceSocial from "@/assets/service-social.png";
@@ -37,258 +23,405 @@ import serviceBrand from "@/assets/service-brand.png";
 import serviceAds from "@/assets/service-ads.png";
 import processBg from "@/assets/process-bg.png";
 
+const EJT_SVG = () => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="18" y1="22" x2="52" y2="22" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <line x1="18" y1="22" x2="18" y2="78" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <line x1="18" y1="50" x2="46" y2="50" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <line x1="18" y1="78" x2="52" y2="78" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <path d="M52 22 L52 68 Q52 78 42 78" stroke="#F4F4F2" strokeWidth="2.2" fill="none"/>
+    <line x1="12" y1="50" x2="88" y2="50" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <line x1="58" y1="22" x2="82" y2="22" stroke="#F4F4F2" strokeWidth="2.2"/>
+    <line x1="70" y1="22" x2="70" y2="82" stroke="#F4F4F2" strokeWidth="2.2"/>
+  </svg>
+);
+
+const HERO_MARK_SVG = () => (
+  <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <line x1="90" y1="110" x2="265" y2="110" stroke="#F4F4F2" strokeWidth="5"/>
+    <line x1="90" y1="110" x2="90" y2="390" stroke="#F4F4F2" strokeWidth="5"/>
+    <line x1="90" y1="250" x2="220" y2="250" stroke="#F4F4F2" strokeWidth="5"/>
+    <line x1="90" y1="390" x2="265" y2="390" stroke="#F4F4F2" strokeWidth="5"/>
+    <path d="M265 110 L265 350 Q265 390 225 390" stroke="#F4F4F2" strokeWidth="5" fill="none"/>
+    <line x1="60" y1="250" x2="440" y2="250" stroke="#F4F4F2" strokeWidth="5"/>
+    <line x1="295" y1="110" x2="410" y2="110" stroke="#F4F4F2" strokeWidth="5"/>
+    <line x1="352" y1="110" x2="352" y2="410" stroke="#F4F4F2" strokeWidth="5"/>
+  </svg>
+);
+
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().optional(),
   businessName: z.string().optional(),
-  service: z.enum(["websites", "social-media", "brand-strategy", "ads", "other"], {
-    required_error: "Please select a service",
-  }),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  service: z.enum(["websites", "social-media", "brand-strategy", "ads", "other"]).optional(),
+  message: z.string().min(5, "Message is required"),
 });
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.18], [1, 0.96]);
+  const markY = useTransform(scrollYProgress, [0, 0.2], [0, 60]);
 
   return (
-    <div className="bg-background text-foreground min-h-screen font-sans selection:bg-foreground selection:text-background">
+    <div className="min-h-screen overflow-x-hidden" style={{ background: '#111111', color: '#F4F4F2', fontFamily: "'Montserrat', sans-serif" }}>
       <Navbar />
-      
-      <main>
-        {/* Hero Section */}
-        <section className="relative h-screen flex items-center overflow-hidden" id="hero">
-          <motion.div 
-            style={{ opacity, scale }}
-            className="absolute inset-0 z-0"
+
+      {/* ── HERO ── */}
+      <section id="hero" className="relative h-screen min-h-[680px] flex items-center overflow-hidden">
+        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-10" style={{ background: 'rgba(17,17,17,0.62)' }} />
+          <img src={heroBg} alt="background" className="w-full h-full object-cover object-center" />
+        </motion.div>
+
+        {/* Large EJT mark watermark */}
+        <motion.div
+          className="absolute right-[-6%] bottom-[-8%] z-0 pointer-events-none"
+          style={{ width: 'clamp(380px, 58vw, 820px)', opacity: 0.11, y: markY }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 0.11, y: 0 }}
+          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+        >
+          <HERO_MARK_SVG />
+        </motion.div>
+
+        <div className="relative z-10 w-full px-6 md:px-[8%] pt-20">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
+            className="max-w-[620px]"
           >
-            <div className="absolute inset-0 bg-background/60 z-10" />
-            <img 
-              src={heroBg} 
-              alt="Architecture" 
-              className="w-full h-full object-cover object-center"
-            />
+            <p className="flex items-center gap-3 mb-7" style={{ fontSize: '0.6rem', letterSpacing: '0.34em', textTransform: 'uppercase', color: '#9A9A9A' }}>
+              <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A', flexShrink: 0 }} />
+              Etched into reality
+            </p>
+            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)', lineHeight: 1.08, color: '#F4F4F2', marginBottom: 26, letterSpacing: '-0.01em' }}>
+              Make Your Business<br />
+              <em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>Impossible To</em><br />
+              Ignore Online.
+            </h1>
+            <p style={{ fontSize: '0.82rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 460 }}>
+              We build the websites, social media, and digital systems that help local businesses look professional, get found, and attract more clients — so you can focus on what you do best.
+            </p>
+            <div className="flex gap-4 flex-wrap">
+              <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 30px', background: '#F4F4F2', color: '#111111', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, textDecoration: 'none' }}>
+                Get a Free Consultation
+              </a>
+              <a href="#packages" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '13px 28px', border: '1px solid rgba(244,244,242,0.25)', color: '#F4F4F2', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
+                See Our Packages
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={13} height={13}><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
           </motion.div>
-          
-          <div className="container mx-auto px-6 relative z-10 pt-20">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="max-w-4xl"
-            >
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-primary leading-[1.1] mb-6">
-                Etched into <br />
-                <span className="text-muted-foreground italic">reality.</span>
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-10 font-light tracking-wide leading-relaxed">
-                We build precision-engineered growth systems for small businesses. 
-                Serious scale for serious brands.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="rounded-none h-14 px-8 text-sm uppercase tracking-widest font-medium" asChild>
-                  <a href="#contact">Work With Us</a>
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-none h-14 px-8 text-sm uppercase tracking-widest font-medium bg-transparent text-primary hover:bg-white/5 border-border" asChild>
-                  <a href="#services">Our Systems</a>
-                </Button>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.6 }}
+          className="absolute bottom-9 left-[52px] flex items-center gap-3"
+        >
+          <span style={{ fontSize: '0.58rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: '#3A3A3A' }}>Scroll</span>
+          <div style={{ width: 40, height: 1, background: 'linear-gradient(to right, #3A3A3A, transparent)' }} />
+        </motion.div>
+      </section>
+
+      {/* ── CLIENTS ── */}
+      <section id="clients" style={{ background: '#0d0d0d', borderTop: '1px solid rgba(244,244,242,0.05)', borderBottom: '1px solid rgba(244,244,242,0.05)', padding: '40px 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', display: 'flex', alignItems: 'center', gap: 60, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.56rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: '#3A3A3A', whiteSpace: 'nowrap', flexShrink: 0 }}>Brands We've Worked With</span>
+          <div style={{ width: 1, height: 32, background: 'rgba(244,244,242,0.08)', flexShrink: 0 }} />
+          <div className="flex items-center gap-14 flex-wrap">
+            {[
+              { name: 'MUKOTI', sub: 'CLEANING SERVICES' },
+              { name: 'Mahlubi Hut', sub: 'DESIGNS' },
+            ].map((c) => (
+              <div key={c.name} style={{ opacity: 0.45 }}>
+                <div style={{ fontFamily: c.name === 'Mahlubi Hut' ? "'Cormorant Garamond', serif" : "'Montserrat', sans-serif", fontWeight: c.name === 'Mahlubi Hut' ? 400 : 500, fontSize: c.name === 'Mahlubi Hut' ? '1.1rem' : '0.85rem', letterSpacing: '0.2em', color: '#F4F4F2' }}>{c.name}</div>
+                <div style={{ fontSize: '0.5rem', letterSpacing: '0.28em', color: '#9A9A9A', fontWeight: 300, marginTop: 3 }}>{c.sub}</div>
               </div>
-            </motion.div>
+            ))}
           </div>
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="absolute bottom-10 left-6 md:left-10 text-xs tracking-[0.3em] uppercase text-muted-foreground origin-left transform -rotate-90 flex items-center gap-4"
+        </div>
+      </section>
+
+      {/* ── ABOUT ── */}
+      <section id="about" style={{ background: '#111111', padding: '130px 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-16 md:gap-20 items-start">
+            <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+              <div style={{ width: 72, marginBottom: 32, opacity: 0.6 }}>
+                <img src={logoIcon} alt="EJT Digital" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
+              </div>
+              <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A' }}>Who We Are</p>
+            </motion.div>
+            <div style={{ borderTop: '1px solid rgba(244,244,242,0.08)', paddingTop: 36 }}>
+              <motion.h2
+                initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }}
+                style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2rem, 3.8vw, 3rem)', lineHeight: 1.1, color: '#F4F4F2', marginBottom: 32 }}
+              >
+                Your business is<br />great at what it does.<br /><em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>We make sure people<br />know about it.</em>
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.22 }}
+                style={{ fontSize: '0.88rem', lineHeight: 1.9, fontWeight: 300, color: '#9A9A9A', maxWidth: 520 }}
+              >
+                EJT Digital is a Johannesburg-based agency that helps service businesses — cleaning companies, security firms, salons, restaurants, and tradespeople — build a professional online presence that actually brings in clients. We handle the websites, social media, and digital strategy so you don't have to.
+              </motion.p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section id="services" style={{ padding: '130px 0', position: 'relative', overflow: 'hidden' }}>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, #3a3a3a 0%, #2a2a2a 50%, #1a1a1a 100%)' }} />
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="flex justify-between items-end flex-wrap gap-4"
+            style={{ borderBottom: '1px solid rgba(244,244,242,0.1)', paddingBottom: 28, marginBottom: 0 }}
           >
-            <span>Scroll</span>
-            <div className="w-12 h-[1px] bg-border" />
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>What We Do</h2>
+            <span style={{ fontSize: '0.58rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: '#9A9A9A' }}>04 Core Services</span>
           </motion.div>
-        </section>
-
-        {/* Introduction */}
-        <section className="py-32 bg-background relative z-20">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {[
+              {
+                num: '01', delay: 0.1, img: serviceWebsites,
+                icon: <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}><rect x="2" y="3" width="20" height="14" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><polyline points="7 10 10 7 13 10 17 7"/></svg>,
+                name: 'Websites That Work For You',
+                desc: 'Not just a page — a professional online home that shows up on Google, builds trust with visitors, and turns them into paying clients. Mobile-ready, fast, and designed to generate enquiries.',
+              },
+              {
+                num: '02', delay: 0.22, img: serviceSocial,
+                icon: <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+                name: 'Social Media That Builds Authority',
+                desc: 'Consistent, professional content that positions you as the go-to business in your area. We handle strategy, graphics, captions, and scheduling — so you can focus on your work.',
+              },
+              {
+                num: '03', delay: 0.1, img: serviceBrand,
+                icon: <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}><polygon points="12 2 22 8.5 12 22 2 8.5"/><line x1="2" y1="8.5" x2="22" y2="8.5"/><polyline points="7 2 9.5 8.5 12 2 14.5 8.5 17 2"/></svg>,
+                name: 'Brand Strategy & Identity',
+                desc: 'We design how your business looks, speaks, and shows up everywhere — from your logo and colours to how you present yourself on every platform. So clients trust you before they even call.',
+              },
+              {
+                num: '04', delay: 0.22, img: serviceAds,
+                icon: <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="#9A9A9A"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg>,
+                name: 'Ads & Client Acquisition',
+                desc: 'Targeted Meta ads and follow-up systems that keep your phone ringing with new enquiries. We set up campaigns, manage the spend, and track results so every rand works harder.',
+              },
+            ].map((s, i) => (
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8 }}
+                key={s.num}
+                initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: s.delay }}
+                className="group"
+                style={{
+                  padding: i % 2 === 0 ? '48px 48px 48px 0' : '48px 0 48px 48px',
+                  borderBottom: '1px solid rgba(244,244,242,0.07)',
+                  borderRight: i % 2 === 0 ? '1px solid rgba(244,244,242,0.07)' : 'none',
+                  cursor: 'default',
+                }}
               >
-                <h2 className="text-3xl md:text-5xl font-serif mb-8">
-                  Most agencies build noise.<br />
-                  <span className="text-muted-foreground italic">We build assets.</span>
-                </h2>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-muted-foreground text-lg font-light leading-relaxed space-y-6"
-              >
-                <p>
-                  EJT Digital is a brand scaling agency that transforms small businesses into market leaders. We don't just run ads or post content. We engineer comprehensive digital systems designed to capture attention and convert it into revenue.
-                </p>
-                <p>
-                  Your brand is your most valuable asset. We treat it with the gravity it deserves.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Services */}
-        <section className="py-32 bg-[#0a0a0a]" id="services">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-20 flex flex-col md:flex-row justify-between items-end gap-8"
-            >
-              <div>
-                <h3 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">What We Do</h3>
-                <h2 className="text-4xl md:text-5xl font-serif">Core Systems</h2>
-              </div>
-              <p className="text-muted-foreground max-w-md font-light">
-                Four interconnected pillars that form the foundation of a dominant brand presence.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-              <ServiceCard 
-                num="01"
-                title="Websites That Work For You"
-                desc="High-performance, beautifully engineered digital storefronts optimized for conversion."
-                img={serviceWebsites}
-                delay={0}
-              />
-              <ServiceCard 
-                num="02"
-                title="Social Media That Builds Authority"
-                desc="Strategic content that positions your brand as the definitive leader in your space."
-                img={serviceSocial}
-                delay={0.2}
-              />
-              <ServiceCard 
-                num="03"
-                title="Brand Strategy & Identity"
-                desc="Comprehensive brand architectures that command premium positioning and trust."
-                img={serviceBrand}
-                delay={0}
-              />
-              <ServiceCard 
-                num="04"
-                title="Ads & Client Acquisition"
-                desc="Data-driven acquisition systems that predictably turn strangers into loyal clients."
-                img={serviceAds}
-                delay={0.2}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Process / Why Us */}
-        <section className="relative py-32 overflow-hidden" id="process">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-background/80 z-10" />
-            <img src={processBg} alt="Process" className="w-full h-full object-cover grayscale opacity-30" />
-          </div>
-          
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="max-w-3xl mx-auto text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-4xl md:text-6xl font-serif mb-8">The EJT Method</h2>
-                <p className="text-xl text-muted-foreground font-light mb-16">
-                  We don't guess. We execute based on proven frameworks that scale predictable revenue.
-                </p>
-              </motion.div>
-              
-              <div className="space-y-12 text-left">
-                {[
-                  { title: "Discovery & Diagnosis", desc: "We map your current ecosystem, identify the bottlenecks holding you back, and uncover hidden leverage points." },
-                  { title: "System Architecture", desc: "We design a custom infrastructure covering brand, web, content, and acquisition tailored to your specific goals." },
-                  { title: "Precision Execution", desc: "Our team builds and deploys the system with uncompromising attention to detail and quality." },
-                  { title: "Optimization & Scale", desc: "We ruthlessly track data, optimize for higher conversion rates, and pour fuel on what works." }
-                ].map((step, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="flex gap-6 md:gap-12"
-                  >
-                    <div className="font-serif text-2xl md:text-3xl text-muted-foreground w-12 shrink-0">
-                      {(i + 1).toString().padStart(2, '0')}.
-                    </div>
-                    <div>
-                      <h4 className="text-xl md:text-2xl font-medium mb-3">{step.title}</h4>
-                      <p className="text-muted-foreground font-light leading-relaxed">{step.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="py-32 bg-card" id="contact">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                <h2 className="text-4xl md:text-6xl font-serif mb-8">Initiate<br/>Contact.</h2>
-                <p className="text-muted-foreground font-light text-lg mb-12">
-                  Ready to scale your brand? Fill out the form, and our partners will be in touch within 24 hours to schedule a discovery session.
-                </p>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Email</h4>
-                    <p className="text-lg">ejtdigital19@gmail.com</p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Phone</h4>
-                    <p className="text-lg">067 007 0229</p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Location</h4>
-                    <p className="text-lg">Global</p>
-                  </div>
+                <div className="overflow-hidden mb-6 relative" style={{ aspectRatio: '4/3' }}>
+                  <img
+                    src={s.img}
+                    alt={s.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 transition-colors duration-700 group-hover:opacity-0" style={{ background: 'rgba(0,0,0,0.2)' }} />
                 </div>
+                <div className="flex items-center gap-4 mb-5">
+                  <div style={{ width: 50, height: 50, flexShrink: 0, border: '1px solid rgba(244,244,242,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {s.icon}
+                  </div>
+                  <span style={{ fontSize: '0.55rem', letterSpacing: '0.15em', color: 'rgba(244,244,242,0.15)', fontWeight: 300 }}>{s.num}</span>
+                </div>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: '1.5rem', color: '#F4F4F2', marginBottom: 12 }}>{s.name}</h3>
+                <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300, color: '#9A9A9A' }}>{s.desc}</p>
               </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <ContactForm />
-              </motion.div>
-            </div>
+            ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <Footer />
+      {/* ── PACKAGES ── */}
+      <section id="packages" style={{ background: '#111111', padding: '130px 0', borderTop: '1px solid rgba(244,244,242,0.05)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="flex justify-between items-end flex-wrap gap-4"
+            style={{ borderBottom: '1px solid rgba(244,244,242,0.1)', paddingBottom: 28, marginBottom: 48 }}
+          >
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>Website Packages</h2>
+            <p style={{ fontSize: '0.8rem', fontWeight: 300, color: '#9A9A9A', maxWidth: 400, textAlign: 'right', lineHeight: 1.7 }}>Every business deserves a professional website. Choose the level that fits where you are right now.</p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                name: 'Presence', featured: false, delay: 0.1,
+                tagline: 'For businesses that need to exist online and look professional. Nothing more, nothing less.',
+                delivery: '1–2 week delivery',
+                features: ['3-page website (Home, About, Contact)', 'Mobile responsive design', 'Contact form with WhatsApp integration', 'Brand colours and fonts applied', 'Basic on-page SEO setup', 'Google Maps embed', '30 days post-launch support'],
+                waText: "Hi EJT Digital, I'm interested in the Presence website package. Let's talk.",
+              },
+              {
+                name: 'Professional', featured: true, delay: 0.22,
+                tagline: 'A complete digital home. Designed to generate enquiries, not just exist. The standard for a serious SA business.',
+                delivery: '2–3 week delivery',
+                features: ['5-page custom website', 'Mobile + tablet responsive', 'Contact form + WhatsApp chat button', 'Full on-page SEO (titles, meta, structure)', 'Google Analytics 4 setup', 'Google Business Profile integration', 'Social media links + feeds', 'Speed optimisation', '30 days post-launch support'],
+                waText: "Hi EJT Digital, I'm interested in the Professional website package. Let's talk.",
+              },
+              {
+                name: 'Authority', featured: false, delay: 0.34,
+                tagline: 'A full-scale digital asset. Built to rank on Google, convert visitors into leads, and position you as the leader.',
+                delivery: '3–5 week delivery',
+                features: ['7–10 page custom website', 'Full brand integration or creation', 'Advanced animations & interactions', 'Full SEO — on-page, technical, sitemap', 'Google Analytics 4 + Search Console', 'Blog / news section', 'Testimonials & case study pages', 'WhatsApp + contact + booking integration', '60 days post-launch support'],
+                waText: "Hi EJT Digital, I'm interested in the Authority website package. Let's talk.",
+              },
+            ].map((pkg) => (
+              <motion.div
+                key={pkg.name}
+                initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: pkg.delay }}
+                style={{ border: `1px solid ${pkg.featured ? 'rgba(244,244,242,0.2)' : 'rgba(244,244,242,0.08)'}`, padding: '40px 32px', position: 'relative' }}
+              >
+                {pkg.featured && (
+                  <div style={{ position: 'absolute', top: -1, right: 32, background: '#F4F4F2', color: '#111111', fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, padding: '6px 14px' }}>Most Popular</div>
+                )}
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: '1.6rem', color: '#F4F4F2', marginBottom: 8 }}>{pkg.name}</div>
+                <p style={{ fontSize: '0.72rem', color: '#9A9A9A', fontWeight: 300, marginBottom: 28, lineHeight: 1.6 }}>{pkg.tagline}</p>
+                <p style={{ fontSize: '0.65rem', color: '#3A3A3A', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 20 }}>{pkg.delivery}</p>
+                <ul style={{ listStyle: 'none', marginBottom: 32 }}>
+                  {pkg.features.map((f) => (
+                    <li key={f} style={{ fontSize: '0.76rem', color: '#9A9A9A', fontWeight: 300, padding: '8px 0', borderBottom: '1px solid rgba(244,244,242,0.04)', display: 'flex', alignItems: 'flex-start', gap: 10, lineHeight: 1.6 }}>
+                      <span style={{ color: 'rgba(244,244,242,0.4)', fontSize: '0.7rem', flexShrink: 0, marginTop: 1 }}>—</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={`https://wa.me/27670070229?text=${encodeURIComponent(pkg.waText)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display: 'block', textAlign: 'center', padding: '14px 28px',
+                    border: `1px solid ${pkg.featured ? '#F4F4F2' : 'rgba(244,244,242,0.2)'}`,
+                    background: pkg.featured ? '#F4F4F2' : 'transparent',
+                    color: pkg.featured ? '#111111' : '#F4F4F2',
+                    fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase',
+                    fontWeight: pkg.featured ? 600 : 400,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Work With Us
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROCESS ── */}
+      <section id="process" style={{ position: 'relative', padding: '130px 0', overflow: 'hidden' }}>
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 z-10" style={{ background: 'rgba(17,17,17,0.82)' }} />
+          <img src={processBg} alt="Process" className="w-full h-full object-cover" style={{ filter: 'grayscale(1)', opacity: 0.3 }} />
+        </div>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
+          <div className="flex justify-between items-end flex-wrap gap-4" style={{ marginBottom: 0 }}>
+            <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A' }}>How It Works</p>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>The Process</h2>
+          </div>
+          <div className="flex flex-col md:flex-row" style={{ borderTop: '1px solid rgba(244,244,242,0.08)', marginTop: 48 }}>
+            {[
+              { n: '01', title: 'Audit', desc: 'We look at your current online presence — website, socials, Google visibility — and give you an honest assessment of what\'s working and what\'s costing you clients.' },
+              { n: '02', title: 'Plan', desc: 'We build a clear roadmap based on your budget, your business goals, and where you\'ll get the biggest return. No guesswork — just a strategy tailored to you.' },
+              { n: '03', title: 'Build', desc: 'We design, develop, and launch. Everything is polished, tested on mobile, and ready to represent your business before it goes live.' },
+              { n: '04', title: 'Grow', desc: 'With your systems running, we track performance, optimise what\'s working, and keep your online presence consistently generating results month after month.' },
+            ].map((step, i) => (
+              <motion.div
+                key={step.n}
+                initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: i * 0.12 }}
+                className="group flex-1"
+                style={{
+                  padding: i === 0 ? '40px 32px 40px 0' : i === 3 ? '40px 0 40px 32px' : '40px 32px',
+                  borderRight: i < 3 ? '1px solid rgba(244,244,242,0.07)' : 'none',
+                }}
+              >
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: '3.8rem', color: 'rgba(244,244,242,0.05)', lineHeight: 1, marginBottom: 20, transition: 'color 0.4s' }} className="group-hover:text-[rgba(244,244,242,0.12)]">{step.n}</div>
+                <p style={{ fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: '#F4F4F2', marginBottom: 14 }}>{step.title}</p>
+                <p style={{ fontSize: '0.8rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A' }}>{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section id="faq" style={{ background: '#0d0d0d', borderTop: '1px solid rgba(244,244,242,0.05)', padding: '130px 0' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-16 md:gap-20 items-start">
+            <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+              <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 16 }}>Common Questions</p>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: '#F4F4F2', lineHeight: 1.1 }}>
+                What you need<br /><em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>to know</em>
+              </h2>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }}>
+              <FAQList />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONTACT ── */}
+      <section id="contact" style={{ position: 'relative', overflow: 'hidden', padding: '150px 0', background: 'linear-gradient(150deg, #1a1a1a 0%, #252525 30%, #3a3a3a 60%, #9A9A9A 100%)' }}>
+        <div className="absolute pointer-events-none" style={{ right: '5%', top: '50%', transform: 'translateY(-50%)', width: 'clamp(220px, 30vw, 420px)', opacity: 0.06 }}>
+          <HERO_MARK_SVG />
+        </div>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 10 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+              <p className="flex items-center gap-3 mb-6" style={{ fontSize: '0.6rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#9A9A9A' }}>
+                <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A' }} />
+                Let's Build
+              </p>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(3.5rem, 9vw, 8rem)', lineHeight: 0.92, letterSpacing: '-0.02em', color: '#F4F4F2', marginBottom: 20 }}>
+                Ready to get<br />
+                <span style={{ display: 'block', color: 'rgba(244,244,242,0.32)', fontStyle: 'italic' }}>etched in?</span>
+              </h2>
+              <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 400 }}>
+                Tell us about your business and we'll get back to you within 24 hours with a clear plan and quote.
+              </p>
+              <div className="space-y-6">
+                <div>
+                  <p style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 6 }}>Email</p>
+                  <a href="mailto:ejtdigital19@gmail.com" style={{ fontSize: '0.88rem', color: '#9A9A9A', textDecoration: 'none', borderBottom: '1px solid rgba(154,154,154,0.3)', paddingBottom: 2 }}>ejtdigital19@gmail.com</a>
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 6 }}>Phone</p>
+                  <a href="tel:0670070229" style={{ fontSize: '0.88rem', color: '#9A9A9A', textDecoration: 'none' }}>067 007 0229</a>
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 6 }}>Location</p>
+                  <p style={{ fontSize: '0.88rem', color: '#9A9A9A' }}>Johannesburg, South Africa</p>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.2 }}>
+              <ContactForm />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{ background: '#0a0a0a', padding: '32px 52px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(244,244,242,0.06)', flexWrap: 'wrap', gap: 16 }}>
+        <div className="flex items-center gap-3">
+          <div style={{ width: 22, height: 22, opacity: 0.5 }}><EJT_SVG /></div>
+          <span style={{ fontSize: '0.6rem', letterSpacing: '0.28em', color: '#3A3A3A', textTransform: 'uppercase' }}>E J T &nbsp; D I G I T A L</span>
+        </div>
+        <small style={{ fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2a2a2a' }}>© 2026 EJT Digital — Etched Into Reality</small>
+      </footer>
     </div>
   );
 }
@@ -296,262 +429,219 @@ export default function Home() {
 function Navbar() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
-    return scrollY.onChange((latest) => {
-      setIsScrolled(latest > 50);
-    });
+    const unsub = scrollY.on("change", (latest) => setIsScrolled(latest > 60));
+    return unsub;
   }, [scrollY]);
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent ${
-        isScrolled ? "bg-background/90 backdrop-blur-md border-border py-4" : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#hero" className="flex items-center gap-3">
-          <img src={logoIcon} alt="EJT Digital" className="h-10 md:h-12 w-auto object-contain" />
-          <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-[0.25em] uppercase text-foreground">EJT</span>
-            <span className="text-[10px] tracking-[0.35em] uppercase text-muted-foreground">Digital</span>
+    <>
+      <nav
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 500,
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: isScrolled ? '16px 52px' : '24px 52px',
+          background: isScrolled ? 'rgba(17,17,17,0.96)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid rgba(244,244,242,0.06)' : '1px solid transparent',
+          transition: 'all 0.4s',
+        }}
+      >
+        {/* Logo */}
+        <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
+          <div style={{ width: 34, height: 34 }}><EJT_SVG /></div>
+          <div style={{ width: 1, height: 26, background: 'rgba(244,244,242,0.18)' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <span style={{ fontWeight: 500, fontSize: '0.78rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase' }}>E J T</span>
+            <span style={{ fontWeight: 300, fontSize: '0.58rem', letterSpacing: '0.34em', color: '#9A9A9A', textTransform: 'uppercase' }}>D I G I T A L</span>
           </div>
         </a>
-        
-        <nav className="hidden md:flex items-center gap-8">
-          <a href="#services" className="text-sm font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">Services</a>
-          <a href="#process" className="text-sm font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors">Process</a>
-        </nav>
-        
-        <Button className="rounded-none uppercase tracking-widest text-xs h-10 px-6" asChild>
-          <a href="#contact">Start</a>
-        </Button>
-      </div>
-    </header>
+
+        {/* Desktop nav */}
+        <ul className="hidden md:flex items-center" style={{ listStyle: 'none', gap: 36 }}>
+          {['About', 'Services', 'Packages', 'Process', 'FAQ', 'Contact'].map((l) => (
+            <li key={l}>
+              <a href={`#${l.toLowerCase()}`} style={{ fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9A9A9A', textDecoration: 'none', transition: 'color 0.3s' }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#F4F4F2')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#9A9A9A')}
+              >{l}</a>
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop CTA */}
+        <a href="#contact" className="hidden md:inline-flex items-center gap-2"
+          style={{ padding: '9px 22px', background: 'transparent', border: '1px solid rgba(244,244,242,0.3)', color: '#F4F4F2', fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', textDecoration: 'none', transition: 'all 0.3s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,244,242,0.08)'; e.currentTarget.style.borderColor = 'rgba(244,244,242,0.6)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(244,244,242,0.3)'; }}
+        >
+          Let's Talk
+        </a>
+
+        {/* Mobile hamburger */}
+        <button className="md:hidden flex flex-col gap-[5px] bg-transparent border-0 cursor-pointer p-1" onClick={() => setDrawerOpen(!drawerOpen)}>
+          <span style={{ display: 'block', width: 22, height: 1, background: '#F4F4F2', transition: 'transform 0.3s', transform: drawerOpen ? 'translateY(6px) rotate(45deg)' : 'none' }} />
+          <span style={{ display: 'block', width: 22, height: 1, background: '#F4F4F2', transition: 'opacity 0.3s', opacity: drawerOpen ? 0 : 1 }} />
+          <span style={{ display: 'block', width: 22, height: 1, background: '#F4F4F2', transition: 'transform 0.3s', transform: drawerOpen ? 'translateY(-6px) rotate(-45deg)' : 'none' }} />
+        </button>
+      </nav>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {drawerOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 400, background: 'rgba(17,17,17,0.98)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 36 }}
+          >
+            {['About', 'Services', 'Packages', 'Process', 'FAQ', 'Contact'].map((l) => (
+              <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setDrawerOpen(false)}
+                style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2.6rem', fontWeight: 300, color: '#F4F4F2', textDecoration: 'none', letterSpacing: '0.04em' }}
+              >{l}</a>
+            ))}
+            <a href="#contact" onClick={() => setDrawerOpen(false)}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 32px', border: '1px solid rgba(244,244,242,0.3)', color: '#F4F4F2', fontFamily: "'Montserrat', sans-serif", fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', marginTop: 12, textDecoration: 'none' }}
+            >
+              Let's Talk
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
-function ServiceCard({ num, title, desc, img, delay }: { num: string, title: string, desc: string, img: string, delay: number }) {
+function FAQList() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const faqs = [
+    { q: 'I already have a Facebook page. Do I still need a website?', a: "A Facebook page is a start, but it's not yours — the algorithm controls who sees your posts. A website is your own space on the internet. It shows up on Google when people search for your services, it looks professional, and it works 24/7 to bring in enquiries even while you sleep." },
+    { q: 'How much does it cost?', a: "It depends on what your business needs. We have packages starting from basic 3-page websites up to full 10-page digital platforms with SEO and analytics. Send us a message and we'll give you a clear quote within 24 hours — no pressure, no obligation." },
+    { q: 'How long does it take to get my website live?', a: "Most websites go live within 1–3 weeks depending on the package. Once we've had an initial conversation and you've confirmed, we move fast. The sooner you start, the sooner your business is working online." },
+    { q: 'Do I need to provide content and images?', a: "It helps if you have photos of your work, but it's not required. We can guide you on what to photograph, write all the copy for you, and source professional images where needed. We handle everything so you don't have to stress about it." },
+    { q: 'What happens after the website is built?', a: "Every website comes with post-launch support (30–60 days depending on your package). After that, we offer optional monthly maintenance plans to keep your site updated, secure, and performing well. We also offer social media management and ads if you want to grow further." },
+    { q: 'Do you work with businesses outside of Johannesburg?', a: "Yes. While we're based in Johannesburg, we work with clients across South Africa remotely. Everything we do can be managed digitally, so location is rarely a limitation." },
+  ];
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay }}
-      className="group cursor-pointer"
-    >
-      <div className="overflow-hidden mb-6 aspect-[4/3] bg-muted relative">
-        <img 
-          src={img} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
-      </div>
-      <div className="flex gap-4">
-        <span className="text-xs uppercase tracking-widest text-muted-foreground mt-2">{num}</span>
-        <div>
-          <h4 className="text-2xl font-serif mb-3 group-hover:text-primary transition-colors">{title}</h4>
-          <p className="text-muted-foreground font-light leading-relaxed">{desc}</p>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {faqs.map((faq, i) => (
+        <div key={i} style={{ borderBottom: '1px solid rgba(244,244,242,0.08)' }}>
+          <button
+            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            style={{ width: '100%', background: 'none', border: 'none', textAlign: 'left', padding: '24px 0', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 20, color: '#F4F4F2', fontFamily: "'Montserrat', sans-serif", fontSize: '0.82rem', fontWeight: 400, letterSpacing: '0.02em' }}
+          >
+            {faq.q}
+            <div style={{ width: 18, height: 18, flexShrink: 0, border: '1px solid rgba(244,244,242,0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.4s', transform: openIndex === i ? 'rotate(45deg)' : 'none', fontSize: '0.75rem', color: '#9A9A9A' }}>+</div>
+          </button>
+          <AnimatePresence>
+            {openIndex === i && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{ overflow: 'hidden' }}
+              >
+                <p style={{ fontSize: '0.82rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A', paddingBottom: 24 }}>{faq.a}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
-    </motion.div>
+      ))}
+    </div>
   );
 }
 
 function ContactForm() {
   const { toast } = useToast();
   const submitContact = useSubmitContact();
-  
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      businessName: "",
-      message: "",
-    },
+    defaultValues: { name: '', email: '', phone: '', businessName: '', message: '' },
   });
 
   function onSubmit(values: z.infer<typeof contactSchema>) {
-    submitContact.mutate({ data: values }, {
+    submitContact.mutate({ data: values as any }, {
       onSuccess: () => {
-        toast({
-          title: "Request Received.",
-          description: "Our team will contact you shortly.",
-        });
+        toast({ title: "Message received.", description: "We'll get back to you within 24 hours." });
         form.reset();
       },
       onError: () => {
-        toast({
-          variant: "destructive",
-          title: "Submission failed.",
-          description: "There was an error processing your request. Please try again.",
-        });
+        toast({ variant: "destructive", title: "Submission failed.", description: "Please try again or email us directly." });
       }
     });
   }
 
+  const inputStyle = { background: 'rgba(244,244,242,0.04)', border: '1px solid rgba(244,244,242,0.1)', color: '#F4F4F2', fontFamily: "'Montserrat', sans-serif", fontSize: '0.82rem', fontWeight: 300, borderRadius: 0, padding: '12px 16px', outline: 'none', width: '100%' };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-background p-8 md:p-10 border border-border">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Full Name *</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" className="rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Email *</FormLabel>
-                <FormControl>
-                  <Input placeholder="john@example.com" className="rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Phone</FormLabel>
-                <FormControl>
-                  <Input placeholder="+1 234 567 890" className="rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="businessName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Business Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Acme Corp" className="rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <FormField
-          control={form.control}
-          name="service"
-          render={({ field }) => (
+      <form onSubmit={form.handleSubmit(onSubmit)} style={{ background: 'rgba(17,17,17,0.6)', border: '1px solid rgba(244,244,242,0.08)', padding: '40px 32px' }} className="space-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <FormField control={form.control} name="name" render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Service Required *</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus:ring-0 focus:border-primary">
-                    <SelectValue placeholder="Select a service" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="rounded-none border-border bg-popover">
-                  <SelectItem value="websites" className="focus:bg-white/5 cursor-pointer">Websites</SelectItem>
-                  <SelectItem value="social-media" className="focus:bg-white/5 cursor-pointer">Social Media</SelectItem>
-                  <SelectItem value="brand-strategy" className="focus:bg-white/5 cursor-pointer">Brand Strategy</SelectItem>
-                  <SelectItem value="ads" className="focus:bg-white/5 cursor-pointer">Ads</SelectItem>
-                  <SelectItem value="other" className="focus:bg-white/5 cursor-pointer">Other</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>Your Name *</FormLabel>
+              <FormControl><Input placeholder="e.g. Thabo Mokoena" style={inputStyle} className="rounded-none focus-visible:ring-0 focus-visible:border-[rgba(244,244,242,0.35)]" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
+          )} />
+          <FormField control={form.control} name="phone" render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs uppercase tracking-widest text-muted-foreground">Project Details *</FormLabel>
+              <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>Phone Number</FormLabel>
+              <FormControl><Input placeholder="e.g. 067 007 0229" style={inputStyle} className="rounded-none focus-visible:ring-0 focus-visible:border-[rgba(244,244,242,0.35)]" {...field} /></FormControl>
+              <FormMessage />
+            </FormItem>
+          )} />
+        </div>
+        <FormField control={form.control} name="email" render={({ field }) => (
+          <FormItem>
+            <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>Email Address *</FormLabel>
+            <FormControl><Input type="email" placeholder="e.g. thabo@mybusiness.co.za" style={inputStyle} className="rounded-none focus-visible:ring-0 focus-visible:border-[rgba(244,244,242,0.35)]" {...field} /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="businessName" render={({ field }) => (
+          <FormItem>
+            <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>Business Name</FormLabel>
+            <FormControl><Input placeholder="Your business name" style={inputStyle} className="rounded-none focus-visible:ring-0 focus-visible:border-[rgba(244,244,242,0.35)]" {...field} /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="service" render={({ field }) => (
+          <FormItem>
+            <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>Service Interested In</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <Textarea 
-                  placeholder="Tell us about your brand and goals..." 
-                  className="resize-none rounded-none border-t-0 border-x-0 border-b border-border bg-transparent px-0 focus-visible:ring-0 focus-visible:border-primary min-h-[100px]" 
-                  {...field} 
-                />
+                <SelectTrigger style={{ ...inputStyle, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} className="rounded-none focus:ring-0">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button 
-          type="submit" 
-          className="w-full rounded-none h-14 uppercase tracking-widest text-sm mt-8"
+              <SelectContent className="rounded-none border-[rgba(244,244,242,0.1)] bg-[#1a1a1a]">
+                <SelectItem value="websites">Websites</SelectItem>
+                <SelectItem value="social-media">Social Media</SelectItem>
+                <SelectItem value="brand-strategy">Brand Strategy</SelectItem>
+                <SelectItem value="ads">Ads</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="message" render={({ field }) => (
+          <FormItem>
+            <FormLabel style={{ display: 'block', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9A9A9A', marginBottom: 8 }}>How Can We Help? *</FormLabel>
+            <FormControl>
+              <Textarea placeholder="Tell us what your business does and what you need..." style={{ ...inputStyle, resize: 'vertical', minHeight: 100 }} className="rounded-none focus-visible:ring-0 focus-visible:border-[rgba(244,244,242,0.35)]" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <button
+          type="submit"
           disabled={submitContact.isPending}
+          style={{ width: '100%', padding: '15px 28px', background: '#F4F4F2', color: '#111111', border: 'none', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, cursor: submitContact.isPending ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
         >
-          {submitContact.isPending ? (
-            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting</>
-          ) : (
-            <>Submit Request <ArrowRight className="ml-2 h-4 w-4" /></>
-          )}
-        </Button>
+          {submitContact.isPending ? <><Loader2 size={14} className="animate-spin" /> Sending...</> : 'Send Message'}
+        </button>
+        <p style={{ fontSize: '0.62rem', color: '#3A3A3A', textAlign: 'center', lineHeight: 1.6 }}>We respond within 24 hours.</p>
       </form>
     </Form>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="bg-[#050505] py-20 border-t border-white/5">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
-          <div className="md:col-span-2">
-            <img src={logoIcon} alt="EJT Digital" className="h-14 w-auto object-contain mb-8" />
-            <p className="text-muted-foreground font-light max-w-sm">
-              Etched into reality. We build precision-engineered growth systems for small businesses.
-            </p>
-          </div>
-          
-          <div>
-            <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-6">Navigation</h4>
-            <ul className="space-y-4 text-sm font-light text-foreground/80">
-              <li><a href="#hero" className="hover:text-primary transition-colors">Home</a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors">Services</a></li>
-              <li><a href="#process" className="hover:text-primary transition-colors">Process</a></li>
-              <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-6">Contact</h4>
-            <ul className="space-y-4 text-sm font-light text-foreground/80">
-              <li><a href="mailto:ejtdigital19@gmail.com" className="hover:text-primary transition-colors">ejtdigital19@gmail.com</a></li>
-              <li><a href="tel:0670070229" className="hover:text-primary transition-colors">067 007 0229</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} EJT Digital. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 md:mt-0 tracking-widest">
-            <a href="#" className="hover:text-primary transition-colors">PRIVACY</a>
-            <a href="#" className="hover:text-primary transition-colors">TERMS</a>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 }
