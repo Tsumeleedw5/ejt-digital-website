@@ -27,8 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, ArrowRight } from "lucide-react";
 
 // Assuming assets exist
-import logoHorizontalWhite from "@assets/06_horizontal_lockup_black_1776422934785.png";
-import logoIconWhite from "@assets/02_icon_black_1776422934783.png";
+import logoIcon from "@assets/02_icon_black_1776423555542.png";
 
 // Generated images
 import heroBg from "@/assets/hero-bg.png";
@@ -311,8 +310,12 @@ function Navbar() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#hero" className="flex items-center">
-          <img src={logoHorizontalWhite} alt="EJT Digital" className="h-8 md:h-10 object-contain invert" />
+        <a href="#hero" className="flex items-center gap-3">
+          <img src={logoIcon} alt="EJT Digital" className="h-10 md:h-12 w-auto object-contain" />
+          <div className="flex flex-col leading-tight">
+            <span className="text-sm font-semibold tracking-[0.25em] uppercase text-foreground">EJT</span>
+            <span className="text-[10px] tracking-[0.35em] uppercase text-muted-foreground">Digital</span>
+          </div>
         </a>
         
         <nav className="hidden md:flex items-center gap-8">
@@ -516,7 +519,7 @@ function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           <div className="md:col-span-2">
-            <img src={logoIconWhite} alt="EJT Digital" className="h-12 invert mb-8" />
+            <img src={logoIcon} alt="EJT Digital" className="h-14 w-auto object-contain mb-8" />
             <p className="text-muted-foreground font-light max-w-sm">
               Etched into reality. We build precision-engineered growth systems for small businesses.
             </p>
