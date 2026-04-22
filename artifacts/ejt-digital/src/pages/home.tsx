@@ -86,30 +86,31 @@ export default function Home() {
           <HERO_MARK_SVG />
         </motion.div>
 
-        <div className="relative z-10 w-full px-6 md:px-[8%] pt-20">
+        <div className="relative z-10 w-full px-6 pt-20 flex justify-center">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.9 }}
-            className="max-w-[620px]"
+            className="max-w-[720px] text-center flex flex-col items-center"
           >
-            <p className="flex items-center gap-3 mb-7" style={{ fontSize: '0.6rem', letterSpacing: '0.34em', textTransform: 'uppercase', color: '#9A9A9A' }}>
+            <p className="flex items-center justify-center gap-3 mb-7" style={{ fontSize: '0.6rem', letterSpacing: '0.34em', textTransform: 'uppercase', color: '#9A9A9A' }}>
               <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A', flexShrink: 0 }} />
               Etched into reality
+              <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A', flexShrink: 0 }} />
             </p>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)', lineHeight: 1.08, color: '#F4F4F2', marginBottom: 26, letterSpacing: '-0.01em' }}>
               Make Your Business<br />
               <em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>Impossible To</em><br />
               Ignore Online.
             </h1>
-            <p style={{ fontSize: '0.82rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 460 }}>
+            <p style={{ fontSize: '0.82rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 520 }}>
               We build the websites, social media, and digital systems that help local businesses look professional, get found, and attract more clients — so you can focus on what you do best.
             </p>
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-4 flex-wrap justify-center">
               <a href="#contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 30px', background: '#F4F4F2', color: '#111111', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, textDecoration: 'none' }}>
                 Get a Free Consultation
               </a>
-              <a href="#packages" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '13px 28px', border: '1px solid rgba(244,244,242,0.25)', color: '#F4F4F2', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
+              <a href="#packages" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 30px', background: '#F4F4F2', color: '#111111', fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, textDecoration: 'none' }}>
                 See Our Packages
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width={13} height={13}><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
@@ -304,11 +305,11 @@ export default function Home() {
                   target="_blank" rel="noopener noreferrer"
                   style={{
                     display: 'block', textAlign: 'center', padding: '14px 28px',
-                    border: `1px solid ${pkg.featured ? '#F4F4F2' : 'rgba(244,244,242,0.2)'}`,
-                    background: pkg.featured ? '#F4F4F2' : 'transparent',
-                    color: pkg.featured ? '#111111' : '#F4F4F2',
+                    border: '1px solid #F4F4F2',
+                    background: '#F4F4F2',
+                    color: '#111111',
                     fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-                    fontWeight: pkg.featured ? 600 : 400,
+                    fontWeight: 600,
                     textDecoration: 'none',
                   }}
                 >
