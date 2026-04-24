@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
 import logoIcon from "@assets/02_icon_black_1776423555542.png";
+import ejtLogoOfficial from "@assets/Desktop_-_11_1777037625444.png";
 import mukotiLogo from "@assets/mcs-logo-transparent_(1)_1777037253028.png";
 import mahlubiLogo from "@assets/10_Wordmark_Full_Text_NO_bg_1777037290131.png";
 import heroBg from "@/assets/hero-bg.png";
@@ -100,9 +101,9 @@ export default function Home() {
               Etched into reality
               <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A', flexShrink: 0 }} />
             </p>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)', lineHeight: 1.08, color: '#F4F4F2', marginBottom: 26, letterSpacing: '-0.01em' }}>
+            <h1 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)', lineHeight: 1.08, color: '#F4F4F2', marginBottom: 26, letterSpacing: '0.01em', textTransform: 'uppercase' }}>
               Make Your Business<br />
-              <em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>Impossible To</em><br />
+              <span style={{ fontWeight: 300, color: '#9A9A9A' }}>Impossible To</span><br />
               Ignore Online.
             </h1>
             <p style={{ fontSize: '0.82rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 520 }}>
@@ -175,9 +176,9 @@ export default function Home() {
             <div style={{ borderTop: '1px solid rgba(244,244,242,0.08)', paddingTop: 36 }}>
               <motion.h2
                 initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }}
-                style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2rem, 3.8vw, 3rem)', lineHeight: 1.1, color: '#F4F4F2', marginBottom: 32 }}
+                style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(2rem, 3.8vw, 3rem)', lineHeight: 1.15, color: '#F4F4F2', marginBottom: 32, textTransform: 'uppercase', letterSpacing: '0.01em' }}
               >
-                Your business is<br />great at what it does.<br /><em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>We make sure people<br />know about it.</em>
+                Your business is<br />great at what it does.<br /><span style={{ fontWeight: 300, color: '#9A9A9A' }}>We make sure people<br />know about it.</span>
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.22 }}
@@ -198,7 +199,7 @@ export default function Home() {
             className="flex justify-between items-end flex-wrap gap-4"
             style={{ borderBottom: '1px solid rgba(244,244,242,0.1)', paddingBottom: 28, marginBottom: 0 }}
           >
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>What We Do</h2>
+            <h2 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2', textTransform: 'uppercase', letterSpacing: '0.04em' }}>What We Do</h2>
             <span style={{ fontSize: '0.58rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: '#9A9A9A' }}>04 Core Services</span>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -253,7 +254,7 @@ export default function Home() {
                   </div>
                   <span style={{ fontSize: '0.55rem', letterSpacing: '0.15em', color: 'rgba(244,244,242,0.15)', fontWeight: 300 }}>{s.num}</span>
                 </div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: '1.5rem', color: '#F4F4F2', marginBottom: 12 }}>{s.name}</h3>
+                <h3 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 500, fontSize: '1.4rem', color: '#F4F4F2', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.03em', lineHeight: 1.2 }}>{s.name}</h3>
                 <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300, color: '#9A9A9A' }}>{s.desc}</p>
               </motion.div>
             ))}
@@ -268,7 +269,7 @@ export default function Home() {
             className="flex justify-between items-end flex-wrap gap-4"
             style={{ borderBottom: '1px solid rgba(244,244,242,0.1)', paddingBottom: 28, marginBottom: 48 }}
           >
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>Website Packages</h2>
+            <h2 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Website Packages</h2>
             <p style={{ fontSize: '0.8rem', fontWeight: 300, color: '#9A9A9A', maxWidth: 400, textAlign: 'right', lineHeight: 1.7 }}>Every business deserves a professional website. Choose the level that fits where you are right now.</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -303,7 +304,7 @@ export default function Home() {
                 {pkg.featured && (
                   <div style={{ position: 'absolute', top: -1, right: 32, background: '#F4F4F2', color: '#111111', fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, padding: '6px 14px' }}>Most Popular</div>
                 )}
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: '1.6rem', color: '#F4F4F2', marginBottom: 8 }}>{pkg.name}</div>
+                <div style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: '1.5rem', color: '#F4F4F2', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{pkg.name}</div>
                 <p style={{ fontSize: '0.72rem', color: '#9A9A9A', fontWeight: 300, marginBottom: 28, lineHeight: 1.6 }}>{pkg.tagline}</p>
                 <p style={{ fontSize: '0.65rem', color: '#3A3A3A', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 20 }}>{pkg.delivery}</p>
                 <ul style={{ listStyle: 'none', marginBottom: 32 }}>
@@ -344,7 +345,7 @@ export default function Home() {
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
           <div className="flex justify-between items-end flex-wrap gap-4" style={{ marginBottom: 0 }}>
             <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A' }}>How It Works</p>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2' }}>The Process</h2>
+            <h2 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#F4F4F2', textTransform: 'uppercase', letterSpacing: '0.04em' }}>The Process</h2>
           </div>
           <div className="flex flex-col md:flex-row" style={{ borderTop: '1px solid rgba(244,244,242,0.08)', marginTop: 48 }}>
             {[
@@ -362,7 +363,7 @@ export default function Home() {
                   borderRight: i < 3 ? '1px solid rgba(244,244,242,0.07)' : 'none',
                 }}
               >
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: '3.8rem', color: 'rgba(244,244,242,0.05)', lineHeight: 1, marginBottom: 20, transition: 'color 0.4s' }} className="group-hover:text-[rgba(244,244,242,0.12)]">{step.n}</div>
+                <div style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 300, fontSize: '3.8rem', color: 'rgba(244,244,242,0.05)', lineHeight: 1, marginBottom: 20, transition: 'color 0.4s' }} className="group-hover:text-[rgba(244,244,242,0.12)]">{step.n}</div>
                 <p style={{ fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase', color: '#F4F4F2', marginBottom: 14 }}>{step.title}</p>
                 <p style={{ fontSize: '0.8rem', lineHeight: 1.85, fontWeight: 300, color: '#9A9A9A' }}>{step.desc}</p>
               </motion.div>
@@ -377,8 +378,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-16 md:gap-20 items-start">
             <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
               <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 16 }}>Common Questions</p>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: '#F4F4F2', lineHeight: 1.1 }}>
-                What you need<br /><em style={{ fontStyle: 'italic', color: '#9A9A9A' }}>to know</em>
+              <h2 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 600, fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: '#F4F4F2', lineHeight: 1.15, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+                What you need<br /><span style={{ fontWeight: 300, color: '#9A9A9A' }}>to know</span>
               </h2>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.1 }}>
@@ -400,9 +401,9 @@ export default function Home() {
                 <span style={{ display: 'block', width: 28, height: 1, background: '#9A9A9A' }} />
                 Let's Build
               </p>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: 'clamp(3.5rem, 9vw, 8rem)', lineHeight: 0.92, letterSpacing: '-0.02em', color: '#F4F4F2', marginBottom: 20 }}>
+              <h2 style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 700, fontSize: 'clamp(3.5rem, 9vw, 8rem)', lineHeight: 0.95, letterSpacing: '0.01em', color: '#F4F4F2', marginBottom: 20, textTransform: 'uppercase' }}>
                 Ready to get<br />
-                <span style={{ display: 'block', color: 'rgba(244,244,242,0.32)', fontStyle: 'italic' }}>etched in?</span>
+                <span style={{ display: 'block', color: 'rgba(244,244,242,0.32)', fontWeight: 300 }}>etched in?</span>
               </h2>
               <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300, color: '#9A9A9A', marginBottom: 44, maxWidth: 400 }}>
                 Tell us about your business and we'll get back to you within 24 hours with a clear plan and quote.
@@ -465,11 +466,11 @@ function Navbar() {
       >
         {/* Logo */}
         <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
-          <div style={{ width: 34, height: 34 }}><EJT_SVG /></div>
+          <img src={ejtLogoOfficial} alt="EJT Digital" style={{ width: 38, height: 38, objectFit: 'contain', display: 'block' }} />
           <div style={{ width: 1, height: 26, background: 'rgba(244,244,242,0.18)' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <span style={{ fontWeight: 500, fontSize: '0.78rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase' }}>E J T</span>
-            <span style={{ fontWeight: 300, fontSize: '0.58rem', letterSpacing: '0.34em', color: '#9A9A9A', textTransform: 'uppercase' }}>D I G I T A L</span>
+            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 700, fontSize: '0.95rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase', lineHeight: 1 }}>E J T</span>
+            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.34em', color: '#9A9A9A', textTransform: 'uppercase', lineHeight: 1, marginTop: 3 }}>D I G I T A L</span>
           </div>
         </a>
 
@@ -511,7 +512,7 @@ function Navbar() {
           >
             {['About', 'Services', 'Packages', 'Process', 'FAQ', 'Contact'].map((l) => (
               <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setDrawerOpen(false)}
-                style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2.6rem', fontWeight: 300, color: '#F4F4F2', textDecoration: 'none', letterSpacing: '0.04em' }}
+                style={{ fontFamily: "'Advent Pro', sans-serif", fontSize: '2.4rem', fontWeight: 500, color: '#F4F4F2', textDecoration: 'none', letterSpacing: '0.06em', textTransform: 'uppercase' }}
               >{l}</a>
             ))}
             <a href="#contact" onClick={() => setDrawerOpen(false)}
