@@ -16,6 +16,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
 import logoIcon from "@assets/02_icon_black_1776423555542.png";
+import mukotiLogo from "@assets/mcs-logo-transparent_(1)_1777037253028.png";
+import mahlubiLogo from "@assets/10_Wordmark_Full_Text_NO_bg_1777037290131.png";
 import heroBg from "@/assets/hero-bg.png";
 import serviceWebsites from "@/assets/service-websites.png";
 import serviceSocial from "@/assets/service-social.png";
@@ -136,13 +138,25 @@ export default function Home() {
           <div style={{ width: 1, height: 32, background: 'rgba(244,244,242,0.08)', flexShrink: 0 }} />
           <div className="flex items-center gap-14 flex-wrap">
             {[
-              { name: 'MUKOTI', sub: 'CLEANING SERVICES' },
-              { name: 'Mahlubi Hut', sub: 'DESIGNS' },
+              { name: 'Mukoti Cleaning Services', img: mukotiLogo, href: 'https://mukoticleaning.co.za/', height: 64 },
+              { name: 'Mahlubi Hut Designs', img: mahlubiLogo, href: 'https://unrivaled-sorbet-a8bb11.netlify.app/', height: 32 },
             ].map((c) => (
-              <div key={c.name} style={{ opacity: 0.45 }}>
-                <div style={{ fontFamily: c.name === 'Mahlubi Hut' ? "'Cormorant Garamond', serif" : "'Montserrat', sans-serif", fontWeight: c.name === 'Mahlubi Hut' ? 400 : 500, fontSize: c.name === 'Mahlubi Hut' ? '1.1rem' : '0.85rem', letterSpacing: '0.2em', color: '#F4F4F2' }}>{c.name}</div>
-                <div style={{ fontSize: '0.5rem', letterSpacing: '0.28em', color: '#9A9A9A', fontWeight: 300, marginTop: 3 }}>{c.sub}</div>
-              </div>
+              <a
+                key={c.name}
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={c.name}
+                style={{ display: 'inline-block', opacity: 0.55, transition: 'opacity 0.4s, filter 0.4s', filter: 'grayscale(1) brightness(1.1)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.filter = 'grayscale(0) brightness(1)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; e.currentTarget.style.filter = 'grayscale(1) brightness(1.1)'; }}
+              >
+                <img
+                  src={c.img}
+                  alt={c.name}
+                  style={{ display: 'block', height: c.height, width: 'auto', maxWidth: 220, objectFit: 'contain' }}
+                />
+              </a>
             ))}
           </div>
         </div>
