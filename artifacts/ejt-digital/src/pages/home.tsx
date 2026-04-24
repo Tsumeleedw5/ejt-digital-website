@@ -466,11 +466,11 @@ function Navbar() {
       >
         {/* Logo */}
         <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
-          <img src={ejtLogoOfficial} alt="EJT Digital" style={{ width: 38, height: 38, objectFit: 'contain', display: 'block' }} />
-          <div style={{ width: 1, height: 26, background: 'rgba(244,244,242,0.18)' }} />
+          <img src={ejtLogoOfficial} alt="EJT Digital" style={{ width: 64, height: 64, objectFit: 'contain', display: 'block' }} />
+          <div style={{ width: 1, height: 40, background: 'rgba(244,244,242,0.18)' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 700, fontSize: '0.95rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase', lineHeight: 1 }}>E J T</span>
-            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.34em', color: '#9A9A9A', textTransform: 'uppercase', lineHeight: 1, marginTop: 3 }}>D I G I T A L</span>
+            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase', lineHeight: 1 }}>E J T</span>
+            <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 300, fontSize: '0.78rem', letterSpacing: '0.34em', color: '#9A9A9A', textTransform: 'uppercase', lineHeight: 1, marginTop: 5 }}>D I G I T A L</span>
           </div>
         </a>
 
