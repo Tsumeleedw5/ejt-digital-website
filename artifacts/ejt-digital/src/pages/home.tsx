@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useSubmitContact } from "@workspace/api-client-react";
+import emailjs from "@emailjs/browser";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ import ejtLogoOfficial from "@assets/Desktop_-_11_1777037625444.png";
 import mukotiLogo from "@assets/mcs-logo-transparent_(1)_1777037253028.png";
 import mahlubiLogo from "@assets/10_Wordmark_Full_Text_NO_bg_1777037290131.png";
 import heroBg from "@/assets/hero-bg.png";
-import serviceWebsites from "@/assets/service-websites.png";
+import serviceWebsites from "@assets/ChatGPT_Image_May_5,_2026,_06_23_26_PM_1778004803575.png";
 import serviceSocial from "@/assets/service-social.png";
 import serviceBrand from "@/assets/service-brand.png";
 import serviceAds from "@/assets/service-ads.png";
@@ -565,24 +565,42 @@ function FAQList() {
   );
 }
 
+const EMAILJS_SERVICE_ID = "service_bcnwuj7";
+const EMAILJS_TEMPLATE_ID = "template_vf7266v";
+const EMAILJS_PUBLIC_KEY = "VRIKELfmjcT3IIgrt";
+
 function ContactForm() {
   const { toast } = useToast();
-  const submitContact = useSubmitContact();
+  const [isSending, setIsSending] = useState(false);
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: '', email: '', phone: '', businessName: '', message: '' },
   });
 
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    submitContact.mutate({ data: values as any }, {
-      onSuccess: () => {
-        toast({ title: "Message received.", description: "We'll get back to you within 24 hours." });
-        form.reset();
-      },
-      onError: () => {
-        toast({ variant: "destructive", title: "Submission failed.", description: "Please try again or email us directly." });
-      }
-    });
+  async function onSubmit(values: z.infer<typeof contactSchema>) {
+    setIsSending(true);
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: values.name,
+          from_email: values.email,
+          phone: values.phone ?? '',
+          business_name: values.businessName ?? '',
+          service: values.service ?? 'Not specified',
+          message: values.message,
+          reply_to: values.email,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      toast({ title: "Message received.", description: "We'll get back to you within 24 hours." });
+      form.reset();
+    } catch {
+      toast({ variant: "destructive", title: "Submission failed.", description: "Please try again or email us directly at ejtdigital19@gmail.com" });
+    } finally {
+      setIsSending(false);
+    }
   }
 
   const inputStyle = { background: 'rgba(244,244,242,0.04)', border: '1px solid rgba(244,244,242,0.1)', color: '#F4F4F2', fontFamily: "'Montserrat', sans-serif", fontSize: '0.82rem', fontWeight: 300, borderRadius: 0, padding: '12px 16px', outline: 'none', width: '100%' };
@@ -651,10 +669,10 @@ function ContactForm() {
         )} />
         <button
           type="submit"
-          disabled={submitContact.isPending}
-          style={{ width: '100%', padding: '15px 28px', background: '#F4F4F2', color: '#111111', border: 'none', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, cursor: submitContact.isPending ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+          disabled={isSending}
+          style={{ width: '100%', padding: '15px 28px', background: '#F4F4F2', color: '#111111', border: 'none', fontFamily: "'Montserrat', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, cursor: isSending ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
         >
-          {submitContact.isPending ? <><Loader2 size={14} className="animate-spin" /> Sending...</> : 'Send Message'}
+          {isSending ? <><Loader2 size={14} className="animate-spin" /> Sending...</> : 'Send Message'}
         </button>
         <p style={{ fontSize: '0.62rem', color: '#3A3A3A', textAlign: 'center', lineHeight: 1.6 }}>We respond within 24 hours.</p>
       </form>
