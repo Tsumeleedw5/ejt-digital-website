@@ -25,6 +25,7 @@ import serviceSocial from "@/assets/service-social.png";
 import serviceBrand from "@/assets/service-brand.png";
 import serviceAds from "@/assets/service-ads.png";
 import processBg from "@/assets/process-bg.png";
+import aboutBg from "@assets/ChatGPT_Image_May_4,_2026,_06_07_07_PM_1778005199715.png";
 
 const EJT_SVG = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,8 +165,13 @@ export default function Home() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section id="about" style={{ background: '#111111', padding: '130px 0' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+      <section id="about" style={{ position: 'relative', padding: '130px 0', overflow: 'hidden' }}>
+        {/* Background image */}
+        <div className="absolute inset-0 z-0">
+          <img src={aboutBg} alt="" className="w-full h-full object-cover object-center" style={{ filter: 'grayscale(0.3)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(17,17,17,0.97) 0%, rgba(17,17,17,0.88) 50%, rgba(17,17,17,0.55) 100%)' }} />
+        </div>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
           <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-16 md:gap-20 items-start">
             <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
               <div style={{ width: 72, marginBottom: 32, opacity: 0.6 }}>
