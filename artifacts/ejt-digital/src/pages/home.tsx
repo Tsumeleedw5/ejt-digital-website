@@ -580,7 +580,7 @@ function Navbar() {
       >
         {/* Logo */}
         <a href="#hero" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
-          <img src={ejtLogoOfficial} alt="EJT Digital" style={{ width: 64, height: 64, objectFit: 'contain', display: 'block' }} />
+          <img src={ejtLogoOfficial} alt="EJT Digital" style={{ width: 90, height: 90, objectFit: 'contain', display: 'block' }} />
           <div style={{ width: 1, height: 40, background: 'rgba(244,244,242,0.18)' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <span style={{ fontFamily: "'Advent Pro', sans-serif", fontWeight: 700, fontSize: '1.25rem', letterSpacing: '0.28em', color: '#F4F4F2', textTransform: 'uppercase', lineHeight: 1 }}>E J T</span>
