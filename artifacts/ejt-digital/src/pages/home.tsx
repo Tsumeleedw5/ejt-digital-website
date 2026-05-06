@@ -26,6 +26,7 @@ import serviceBrand from "@/assets/service-brand.png";
 import serviceAds from "@/assets/service-ads.png";
 import processBg from "@/assets/process-bg.png";
 import aboutBg from "@assets/ChatGPT_Image_May_4,_2026,_06_07_07_PM_1778005199715.png";
+import packagesBg from "@assets/ChatGPT_Image_May_4,_2026,_12_16_57_PM_1778005227341.png";
 
 const EJT_SVG = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -269,8 +270,12 @@ export default function Home() {
       </section>
 
       {/* ── PACKAGES ── */}
-      <section id="packages" style={{ background: '#111111', padding: '130px 0', borderTop: '1px solid rgba(244,244,242,0.05)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+      <section id="packages" style={{ position: 'relative', padding: '130px 0', borderTop: '1px solid rgba(244,244,242,0.05)', overflow: 'hidden' }}>
+        <div className="absolute inset-0 z-0">
+          <img src={packagesBg} alt="" className="w-full h-full object-cover object-center" style={{ filter: 'grayscale(0.5)' }} />
+          <div className="absolute inset-0" style={{ background: 'rgba(17,17,17,0.88)' }} />
+        </div>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
             className="flex justify-between items-end flex-wrap gap-4"
             style={{ borderBottom: '1px solid rgba(244,244,242,0.1)', paddingBottom: 28, marginBottom: 48 }}
