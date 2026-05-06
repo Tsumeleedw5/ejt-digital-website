@@ -27,6 +27,7 @@ import serviceAds from "@/assets/service-ads.png";
 import processBg from "@/assets/process-bg.png";
 import aboutBg from "@assets/ChatGPT_Image_May_4,_2026,_06_07_07_PM_1778005199715.png";
 import packagesBg from "@assets/ChatGPT_Image_May_4,_2026,_12_16_57_PM_1778005227341.png";
+import faqBg from "@assets/ChatGPT_Image_May_4,_2026,_04_12_50_PM_1778005210362.png";
 
 const EJT_SVG = () => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -384,8 +385,12 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" style={{ background: '#0d0d0d', borderTop: '1px solid rgba(244,244,242,0.05)', padding: '130px 0' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px' }}>
+      <section id="faq" style={{ position: 'relative', borderTop: '1px solid rgba(244,244,242,0.05)', padding: '130px 0', overflow: 'hidden' }}>
+        <div className="absolute inset-0 z-0">
+          <img src={faqBg} alt="" className="w-full h-full object-cover object-center" style={{ filter: 'grayscale(0.4)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.92) 0%, rgba(13,13,13,0.85) 50%, rgba(13,13,13,0.92) 100%)' }} />
+        </div>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 52px', position: 'relative', zIndex: 1 }}>
           <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-16 md:gap-20 items-start">
             <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
               <p style={{ fontSize: '0.58rem', letterSpacing: '0.32em', textTransform: 'uppercase', color: '#3A3A3A', marginBottom: 16 }}>Common Questions</p>
