@@ -1,0 +1,78 @@
+# EJT Digital — Netlify configuration
+# Static site. No build step. Publish the root folder.
+
+[build]
+  publish = "."
+  # No build command needed — vanilla HTML/CSS/JS
+
+# ═══════════════════════════════════════════════════════════════
+# SECURITY HEADERS — applied to every page on the site
+# ═══════════════════════════════════════════════════════════════
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent the site from being iframed by other sites (clickjacking defence)
+    X-Frame-Options = "DENY"
+
+    # Force browsers to respect declared MIME types (blocks MIME sniffing attacks)
+    X-Content-Type-Options = "nosniff"
+
+    # Only send the referrer to same-origin, and only path (not query) to cross-origin
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Deny access to sensitive device APIs (site doesn't use any of them)
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+
+    # Force HTTPS for 2 years, include subdomains, allow HSTS preload
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+
+    # Legacy XSS filter — still useful for older browsers
+    X-XSS-Protection = "1; mode=block"
+
+    # Content Security Policy — lock down what can load on the page
+    # - default: only same-origin
+    # - scripts: self + Google Fonts + EmailJS CDN (jsdelivr)
+    # - styles:  self + Google Fonts (inline styles allowed — used by trusted markup)
+    # - fonts:   Google Fonts
+    # - images:  self + data URIs (for icons) + WhatsApp CDN
+    # - connect: EmailJS API (form submissions)
+    # - frame-ancestors: none (same as X-Frame-Options DENY, but modern)
+    # - form-action: self only (blocks form hijacking)
+    # - base-uri: self only (blocks <base> tag injection)
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.emailjs.com https://*.emailjs.com; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'"
+
+# ═══════════════════════════════════════════════════════════════
+# CACHE POLICY — long cache on static assets, no cache on HTML
+# ═══════════════════════════════════════════════════════════════
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ═══════════════════════════════════════════════════════════════
+# REDIRECTS
+# ═══════════════════════════════════════════════════════════════
+
+# Force www → apex (change the direction if you prefer www)
+[[redirects]]
+  from = "https://www.ejtdigital.co.za/*"
+  to = "https://ejtdigital.co.za/:splat"
+  status = 301
+  force = true
+
+# Legacy path redirects (add here as the site grows)
+# [[redirects]]
+#   from = "/old-page"
+#   to = "/new-page"
+#   status = 301
+
+# 404 fallback — must be the LAST redirect
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
